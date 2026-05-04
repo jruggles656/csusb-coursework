@@ -1,0 +1,29 @@
+# Don't commit course materials you don't own
+# (textbook PDFs, copyrighted slides, etc.)
+*.pdf
+
+# If you DO want to include a specific PDF (like your own report), use:
+#   git add -f path/to/your-report.pdf
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Obsidian
+.obsidian/
+
+# Compiled binaries
+*.exe
+*.out
+*.o
+*.db
+*.db-shm
+*.db-wal
