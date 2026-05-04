@@ -216,39 +216,89 @@ def subdomain_finder(domain):
 
 # ---------- Gradio UI ----------
 
-DISCLAIMER = (
-    "## Ethical Hacking Toolkit\n"
-    "**For authorized testing only.** Use against systems you own or have "
-    "written permission to test. Unauthorized scanning is illegal."
-)
+HEADER = """
+<div style="text-align:center; padding: 18px 0 6px 0;">
+  <h1 style="margin:0; font-size: 2.2em;">🛡️ Ethical Hacking Toolkit</h1>
+  <p style="margin:4px 0 0 0; opacity:0.85; font-size:1.05em;">
+    A multi-tool reconnaissance &amp; security analysis suite · IST-4620
+  </p>
+</div>
+"""
 
-with gr.Blocks(title="Ethical Hacking Toolkit") as demo:
+DISCLAIMER = """
+> ⚠️ **For authorized testing only.** Use this tool against systems you own or
+> have **explicit written permission** to test. Unauthorized scanning is
+> illegal under the Computer Fraud and Abuse Act and equivalent laws.
+"""
+
+CSS = """
+.gradio-container { max-width: 1100px !important; }
+#title-card { border-radius: 12px; }
+button.primary { font-weight: 600 !important; }
+footer { visibility: hidden; }
+"""
+
+with gr.Blocks(title="Ethical Hacking Toolkit", theme=gr.themes.Soft(primary_hue="indigo", secondary_hue="slate"), css=CSS) as demo:
+    gr.HTML(HEADER)
     gr.Markdown(DISCLAIMER)
 
-    with gr.Tab("Port Scanner"):
-        ps_in = gr.Textbox(label="Target host or IP", placeholder="example.com or 192.168.1.1")
-        ps_out = gr.Textbox(label="Results", lines=12)
-        gr.Button("Scan").click(port_scanner, ps_in, ps_out)
+    with gr.Tab("🔍 Port Scanner"):
+        gr.Markdown("### Scan a target for open TCP ports\nChecks 16 common service ports (SSH, HTTP, SMB, RDP, etc.).")
+        with gr.Row():
+            ps_in = gr.Textbox(label="🎯 Target host or IP", placeholder="example.com or 192.168.1.1", scale=4)
+            ps_btn = gr.Button("Scan", variant="primary", scale=1)
+        ps_out = gr.Textbox(label="📋 Results", lines=12, show_copy_button=True)
+        gr.Examples(["scanme.nmap.org", "example.com"], inputs=ps_in, label="Try one")
+        ps_btn.click(port_scanner, ps_in, ps_out)
 
-    with gr.Tab("HTTP Header Scanner"):
-        hs_in = gr.Textbox(label="URL", placeholder="https://example.com")
-        hs_out = gr.Textbox(label="Results", lines=12)
-        gr.Button("Scan").click(header_scanner, hs_in, hs_out)
+    with gr.Tab("🌐 HTTP Header Scanner"):
+        gr.Markdown("### Audit a website's security headers\nFlags missing protections like CSP, HSTS, and X-Frame-Options.")
+        with gr.Row():
+            hs_in = gr.Textbox(label="🔗 URL", placeholder="https://example.com", scale=4)
+            hs_btn = gr.Button("Scan", variant="primary", scale=1)
+        hs_out = gr.Textbox(label="📋 Results", lines=12, show_copy_button=True)
+        gr.Examples(["https://github.com", "https://example.com"], inputs=hs_in, label="Try one")
+        hs_btn.click(header_scanner, hs_in, hs_out)
 
-    with gr.Tab("Hash Identifier"):
-        hi_in = gr.Textbox(label="Hash", placeholder="paste a hash")
-        hi_out = gr.Textbox(label="Results", lines=4)
-        gr.Button("Identify").click(hash_identifier, hi_in, hi_out)
+    with gr.Tab("🔐 Hash Identifier"):
+        gr.Markdown("### Identify a hash by format and length\nDetects MD5, SHA-1, SHA-256, SHA-512, bcrypt, Argon2, and more.")
+        with gr.Row():
+            hi_in = gr.Textbox(label="#️⃣ Hash", placeholder="paste a hash here", scale=4)
+            hi_btn = gr.Button("Identify", variant="primary", scale=1)
+        hi_out = gr.Textbox(label="📋 Results", lines=4, show_copy_button=True)
+        gr.Examples(
+            [
+                "5f4dcc3b5aa765d61d8327deb882cf99",
+                "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d",
+                "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewKyHWUKW0G4GfDi",
+            ],
+            inputs=hi_in,
+            label="Try one",
+        )
+        hi_btn.click(hash_identifier, hi_in, hi_out)
 
-    with gr.Tab("Password Strength"):
-        pw_in = gr.Textbox(label="Password", type="password")
-        pw_out = gr.Textbox(label="Results", lines=8)
-        gr.Button("Analyze").click(password_strength, pw_in, pw_out)
+    with gr.Tab("🔑 Password Strength"):
+        gr.Markdown("### Analyze password entropy\nCalculates entropy in bits and checks against a common-passwords list.")
+        with gr.Row():
+            pw_in = gr.Textbox(label="🔒 Password", type="password", scale=4)
+            pw_btn = gr.Button("Analyze", variant="primary", scale=1)
+        pw_out = gr.Textbox(label="📋 Results", lines=8, show_copy_button=True)
+        pw_btn.click(password_strength, pw_in, pw_out)
 
-    with gr.Tab("Subdomain Finder"):
-        sd_in = gr.Textbox(label="Domain", placeholder="example.com")
-        sd_out = gr.Textbox(label="Results", lines=12)
-        gr.Button("Find").click(subdomain_finder, sd_in, sd_out)
+    with gr.Tab("🌍 Subdomain Finder"):
+        gr.Markdown("### Discover subdomains via DNS\nResolves common subdomain names against a target domain.")
+        with gr.Row():
+            sd_in = gr.Textbox(label="🌐 Domain", placeholder="example.com", scale=4)
+            sd_btn = gr.Button("Find", variant="primary", scale=1)
+        sd_out = gr.Textbox(label="📋 Results", lines=12, show_copy_button=True)
+        gr.Examples(["github.com", "iana.org"], inputs=sd_in, label="Try one")
+        sd_btn.click(subdomain_finder, sd_in, sd_out)
+
+    gr.Markdown(
+        "<div style='text-align:center; opacity:0.6; font-size:0.85em; padding-top:14px;'>"
+        "Built with 🐍 Python &amp; ⚡ Gradio · CSUSB IST-4620 · 2026"
+        "</div>"
+    )
 
 
 if __name__ == "__main__":
