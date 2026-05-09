@@ -8,7 +8,7 @@ This isn't every assignment I've ever turned in — it's the work that shows wha
 
 | Course | Focus | Highlights |
 |--------|-------|-----------|
-| **IST 4910** | Enterprise System Administration | *(final project coming)* |
+| **IST 4910** | Enterprise System Administration | Built [Rent a Dog Enterprise Network](https://github.com/jruggles656/rent-a-dog-enterprise-network) — 9-VM enterprise network defended through pentest week, with AI-driven incident response |
 | **IST 4620** | Penetration Testing & Ethical Hacking | Built [Raccoon Recon](https://github.com/jruggles656/raccoon-recon) — a full reconnaissance toolkit in Go |
 | **IST 5930** | AI & Cloud Computing | *(in progress)* |
 
