@@ -27,3 +27,13 @@ desktop.ini
 *.db
 *.db-shm
 *.db-wal
+
+# Security — never commit these
+.env
+.env.*
+*.pem
+*.key
+*.p12
+.gh-token
+credentials.json
+secrets/
